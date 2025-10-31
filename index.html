@@ -102,16 +102,16 @@
       <h1>Find the right program for your Ninja!</h1>
     </header>
 
-    <!-- Pre‑start: Director enters parent's first & last name (single box) -->
+    <!-- Pre-start: Director enters parent's first name (single box) -->
     <section class="card" id="prestart" aria-label="Director setup" autocomplete="off">
-      <label class="hint" for="parentFullNameTop">Parent's first and last name</label>
+      <label class="hint" for="parentFirstNameTop">Parent's first name</label>
       <div style="display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
-        <input id="parentFullNameTop" placeholder="First and last name" autocomplete="off" autocapitalize="words" style="padding:12px;border:1px solid var(--border);border-radius:12px;font-size:16px" />
+        <input id="parentFirstNameTop" placeholder="First name" autocomplete="off" autocapitalize="words" style="padding:12px;border:1px solid var(--border);border-radius:12px;font-size:16px" />
         <button class="btn primary" id="startQuizBtn" type="button" disabled>Start quiz ▶</button>
       </div>
     </section>
 
-    <!-- WIZARD: One‑by‑one questions -->
+    <!-- WIZARD: One-by-one questions -->
     <section id="wizard" class="card hidden" aria-live="polite">
       <div class="topbar" aria-hidden="true">
         <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
@@ -194,8 +194,8 @@
         <fieldset>
           <legend>How does your child learn best?</legend>
           <div class="opts">
-            <label class="opt"><input type="radio" name="learn" value="Hands-on" required>Hands‑on activities</label>
-            <label class="opt"><input type="radio" name="learn" value="Step-by-step">Step‑by‑step instructions</label>
+            <label class="opt"><input type="radio" name="learn" value="Hands-on" required>Hands-on activities</label>
+            <label class="opt"><input type="radio" name="learn" value="Step-by-step">Step-by-step instructions</label>
             <label class="opt"><input type="radio" name="learn" value="Independent">Independent exploration</label>
             <label class="opt"><input type="radio" name="learn" value="Mentor">Working with a mentor</label>
           </div>
@@ -210,7 +210,7 @@
             <label class="opt"><input type="checkbox" name="hopes" value="Fun">Fun & confidence</label>
             <label class="opt"><input type="checkbox" name="hopes" value="NewSkills">New coding/tech skills</label>
             <label class="opt"><input type="checkbox" name="hopes" value="Academic">Academic enrichment</label>
-            <label class="opt"><input type="checkbox" name="hopes" value="LongTerm">Long‑term STEM development</label>
+            <label class="opt"><input type="checkbox" name="hopes" value="LongTerm">Long-term STEM development</label>
           </div>
           <p class="hint require-msg" aria-live="polite" style="display:none">Select at least one option to continue.</p>
         </fieldset>
@@ -222,7 +222,7 @@
           <legend>Which format will your child enjoy more?</legend>
           <div class="opts">
             <label class="opt"><input type="radio" name="structure" value="Structured" required>Structured curriculum</label>
-            <label class="opt"><input type="radio" name="structure" value="Clubs">Creative, club‑style</label>
+            <label class="opt"><input type="radio" name="structure" value="Clubs">Creative, club-style</label>
             <label class="opt"><input type="radio" name="structure" value="Either">Either / mix</label>
           </div>
         </fieldset>
@@ -365,7 +365,7 @@
         <strong>Fun Fact!</strong>
         <div id="funFactText"></div>
       </div>
-      <h3 class="center" style="margin:0 0 8px">At‑a‑glance stats</h3>
+      <h3 class="center" style="margin:0 0 8px">At-a-glance stats</h3>
       <div id="stats"></div>
       <div class="actions center" style="justify-content:center;margin-top:12px">
         <button class="btn" id="retake">Retake quiz</button>
@@ -381,24 +381,17 @@
     const $ = (sel,root)=> (root||document).querySelector(sel);
     const $$ = (sel,root)=> Array.from((root||document).querySelectorAll(sel));
 
-    // In‑memory parent name (no persistence)
-    let _parentFirst = '', _parentLast = '';
+    // In-memory parent first name (no persistence)
+    let _parentFirst = '';
     function setParentFirst(n){ _parentFirst = String(n||'').trim(); }
-    function setParentLast(n){ _parentLast = String(n||'').trim(); }
     function getFirstName(){ return _parentFirst; }
-
-    function parseFullName(full){
-      const raw = String(full||'').trim();
-      const parts = raw.split(/[ ,]+/).filter(Boolean);
-      return { first: parts[0]||'', last: (parts.slice(1).join(' ')||'') };
-    }
 
     // ---------- Fun Facts (topics kept for legacy tests) ----------
     const factsByTopic = {
       Coding: [
         'Kids who learn to code often strengthen math and logic skills because many coding concepts mirror mathematical thinking.',
         'Learning to code helps children move from tech consumers to tech creators — building projects they can share.',
-        'Coding can boost critical thinking and problem‑solving that transfer beyond screen time.',
+        'Coding can boost critical thinking and problem-solving that transfer beyond screen time.',
         'Early coding demystifies how apps and the internet work — giving kids confidence with technology.',
         'Because coding reinforces STEM foundations, kids often discover new interest in subjects like math or physics.'
       ],
@@ -418,35 +411,35 @@
       ],
       Roblox: [
         'In Roblox Studio, kids script with Luau (a version of Lua) — a real language used in game development.',
-        'Creators can publish their own Roblox games and even earn in‑game currency (Robux).',
-        'Roblox hosts millions of user‑generated experiences — a huge canvas for creativity.',
+        'Creators can publish their own Roblox games and even earn in-game currency (Robux).',
+        'Roblox hosts millions of user-generated experiences — a huge canvas for creativity.',
         'Building in Roblox boosts teamwork and logic as kids design, script, and debug mechanics.',
-        'Because it’s text‑based, Roblox coding helps kids transition from blocks to real code.'
+        'Because it’s text-based, Roblox coding helps kids transition from blocks to real code.'
       ],
       Minecraft: [
         'Minecraft can teach real programming through “mods” — many introduce Java concepts.',
         'Schools use Minecraft to explore geometry, architecture, and resource management.',
         'Minecraft was once called “Cave Game” and started as a solo developer project.',
         'Coding in Minecraft helps kids move from playing to designing logical worlds.',
-        'Block‑building skills in Minecraft often carry into robotics, 3D design, and engineering.'
+        'Block-building skills in Minecraft often carry into robotics, 3D design, and engineering.'
       ],
       '3D Printing': [
         '3D printing turns ideas into physical objects — from toys to real engineering parts.',
-        'Designing for 3D printing builds geometry and spatial‑reasoning skills.',
+        'Designing for 3D printing builds geometry and spatial-reasoning skills.',
         '3D printing has been around since the 1980s — older than the modern web.',
-        'Hands‑on printing projects can engage learners who thrive with tangible activities.',
+        'Hands-on printing projects can engage learners who thrive with tangible activities.',
         'Student 3D designs today can inspire future solutions in robotics and medicine.'
       ],
       YouTube: [
         'Video creation teaches storytelling, editing, and communication — useful in any career.',
         'Learning cameras, lighting, and sound builds real tech fluency.',
-        'Creating responsibly is key — digital citizenship goes hand‑in‑hand with content.',
+        'Creating responsibly is key — digital citizenship goes hand-in-hand with content.',
         'Many young creators build audiences by sharing what they love.',
         'Video skills help kids express ideas clearly and confidently.'
       ]
     };
 
-    // Program deep‑links
+    // Program deep-links
     const programLinks = {
       'JR': 'https://www.codeninjas.com/jr',
       'CREATE': 'https://www.codeninjas.com/create',
@@ -469,7 +462,7 @@
 
     // ---------- DOM refs ----------
     const prestart = $('#prestart');
-    const parentFullInput = $('#parentFullNameTop');
+    const parentFirstInput = $('#parentFirstNameTop');
     const startBtn = $('#startQuizBtn');
 
     const wizard = $('#wizard');
@@ -485,25 +478,25 @@
 
     let idx = 0;
 
-    // ---------- Prestart gate ----------
+    // ---------- Prestart gate (first name only) ----------
     function syncStartUI(){
       prestart.classList.remove('hidden');
       wizard.classList.add('hidden');
-      if(parentFullInput){ parentFullInput.value=''; parentFullInput.focus(); }
+      if(parentFirstInput){ parentFirstInput.value=''; parentFirstInput.focus(); }
       if(startBtn){ startBtn.disabled = true; }
     }
-    if(parentFullInput){
-      parentFullInput.addEventListener('input', ()=>{
-        const tokens = (parentFullInput.value||'').trim().split(/[ ,]+/).filter(Boolean);
-        startBtn.disabled = tokens.length < 2;
+    if(parentFirstInput){
+      parentFirstInput.addEventListener('input', ()=>{
+        const tokens = (parentFirstInput.value||'').trim().split(/[ ,]+/).filter(Boolean);
+        startBtn.disabled = tokens.length < 1; // only a first name required
       });
-      parentFullInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); startBtn.click(); }});
+      parentFirstInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); startBtn.click(); }});
     }
     if(startBtn){
       startBtn.addEventListener('click', ()=>{
-        const {first,last} = parseFullName(parentFullInput.value);
-        if(!first || !last) return;
-        setParentFirst(first); setParentLast(last);
+        const first = String(parentFirstInput.value||'').trim();
+        if(!first) return;
+        setParentFirst(first);
         prestart.classList.add('hidden');
         wizard.classList.remove('hidden');
         idx = 0; updateUI();
@@ -571,7 +564,7 @@
       const map = {
         ConfidenceIndependence:'confidence and independence',
         FocusPersistence:'focus and persistence',
-        ProblemSolvingLogic:'problem‑solving and logic',
+        ProblemSolvingLogic:'problem-solving and logic',
         CreativityImagination:'creativity and imagination',
         FriendshipsTeamwork:'friendships and teamwork'
       };
@@ -650,10 +643,10 @@
       let title='', blurb='', points=[];
       if(top==='JR'){
         title='Recommended: JR Program (Ages 5–7)';
-        blurb='Play‑based, confidence‑building intro to coding and STEM.';
+        blurb='Play-based, confidence-building intro to coding and STEM.';
         points=[
           'Visual curriculum with no reading required',
-          'Playful activities that build sequencing and problem‑solving',
+          'Playful activities that build sequencing and problem-solving',
           'Supportive dojo environment with Code Senseis®'
         ];
       } else if(top==='CREATE'){
@@ -668,7 +661,7 @@
         title='Recommended: Academy Path (AI or Robotics)';
         blurb='For ambitious learners ready to dive deeper into advanced STEM topics.';
         points=[
-          'Hands‑on projects in AI or Robotics',
+          'Hands-on projects in AI or Robotics',
           'Blend software, hardware, and design to solve problems',
           'Great alongside CREATE for accelerated growth'
         ];
@@ -693,7 +686,7 @@
 
       let confidenceLine = '';
       if(schoolFeeling==='StrugglesConfidence' || visitReason==='NeedsConfidenceFocus'){
-        confidenceLine = ' Our mentor‑led dojo is designed to turn hesitation into confidence through small wins and steady encouragement.';
+        confidenceLine = ' Our mentor-led dojo is designed to turn hesitation into confidence through small wins and steady encouragement.';
       }
 
       const valuesLine = wants ? ` You mentioned ${wants} — that’s exactly what we build here.` : '';
@@ -706,7 +699,7 @@
         'JR': [
           { value: '5–7', label: 'Ages (JR)' },
           { value: 'No reading', label: 'Reading required' },
-          { value: 'Scratch & Blockly', label: 'Kid‑friendly platforms' },
+          { value: 'Scratch & Blockly', label: 'Kid-friendly platforms' },
           { value: 'Sequencing • Loops • Conditionals', label: 'Core concepts' },
           { value: '1–2 hrs/wk', label: 'Typical time' },
           { value: '≈7–8:1', label: 'Student:Sensei (typical)' }
@@ -721,7 +714,7 @@
         ],
         'ACADEMY': [
           { value: 'AI • Robotics', label: 'Tracks' },
-          { value: 'Multi‑week', label: 'Module length' },
+          { value: 'Multi-week', label: 'Module length' },
           { value: '≈7–8:1', label: 'Student:Sensei (typical)' },
           { value: 'LEGO SPIKE • VEX GO • Ozobot', label: 'Typical kits' },
           { value: 'Aug 2025', label: 'Launched' }
@@ -730,12 +723,13 @@
       const stats = $('#stats');
       stats.innerHTML = (statsByProgram[top]||[]).map(s=>`<div class="stat"><h3>${s.value}</h3><p>${s.label}</p></div>`).join('');
 
-      // --- Fun Fact selection (coding‑focused + deep‑link) ---
+      // --- Fun Fact selection (coding-focused + deep-link) ---
       const funFactBox = $('#funFact');
       const funFactText = $('#funFactText');
       if(codingQuantFacts && codingQuantFacts.length){
         const fact = pickRandom(codingQuantFacts);
-        funFactText.innerHTML = `${fact} &nbsp; <a class="learn-link" href="${programLink}" target="_blank" rel="noopener">Learn more about ${top}</a>`;
+        const topName = top === 'JR' ? 'JR' : (top === 'CREATE' ? 'CREATE' : 'ACADEMY');
+        funFactText.innerHTML = `${fact} &nbsp; <a class="learn-link" href="${programLink}" target="_blank" rel="noopener">Learn more about ${topName}</a>`;
         funFactBox.classList.remove('hidden');
       } else {
         funFactBox.classList.add('hidden');
@@ -763,28 +757,25 @@
     });
     $('#print').addEventListener('click',()=>window.print());
 
-    // ---------- Self‑tests (do not change existing; add new) ----------
+    // ---------- Self-tests (updated for first-name only) ----------
     (function tests(){
       const topics = ['Coding','Robotics','AI','Roblox','Minecraft','3D Printing','YouTube'];
-      // Existing tests
       console.assert(topics.every(t=> (factsByTopic[t]||[]).length===5 ), 'Each topic should have 5 facts');
-      console.assert(typeof parseFullName==='function', 'parseFullName missing');
-      const parsed = parseFullName('Alex Q Smith');
-      console.assert(parsed.first==='Alex' && parsed.last==='Q Smith', 'Name parser failed');
       console.assert(typeof $==='function' && typeof $$==='function', 'Shorthands $ / $$ missing');
       const sample = factsByTopic['Coding'][0];
       console.assert(typeof sample==='string' && sample.length>0, 'factsByTopic fetch failed');
 
-      // New tests (updated for removed Q15)
-      console.assert(window['$1']===undefined, 'Errant $1 symbol present in global scope');
+      // New tests (first-name only)
+      console.assert(document.querySelector('#parentFirstNameTop'), 'First-name input missing');
+      console.assert(typeof getFirstName==='function', 'getFirstName missing');
       console.assert(Array.isArray(codingQuantFacts) && codingQuantFacts.length>=6, 'Coding quantitative facts missing');
-      console.assert(codingQuantFacts.filter(f=>/\d/.test(f)).length>=6, 'Quant facts should contain numbers');
+      console.assert(codingQuantFacts.filter(f=>/\\d/.test(f)).length>=6, 'Quant facts should contain numbers');
       console.assert(['JR','CREATE','ACADEMY'].every(k=>programLinks[k]), 'Program links missing');
 
       // Emotional steps present (homeEncouragement removed)
       const emotionalNames = ['visitReason','schoolFeeling','learnPlayStyle','challengeResponse','curiositySpark','growthTargets','techConfidence','schoolWish','aiImportance'];
       emotionalNames.forEach(n=>{
-        const el = document.querySelector(`[name="${n}"]`);
+        const el = document.querySelector(`[name=\"${n}\"]`);
         console.assert(el, 'Missing emotional input: '+n);
       });
       console.log('[OK] Sanity checks passed');
